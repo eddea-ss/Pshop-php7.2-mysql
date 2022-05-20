@@ -1,0 +1,27 @@
+version: '3'  
+services:
+  #imagen oficial de docker, limpia en: https://hub.docker.com/_/php
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prestashop
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./data/prestashop:/var/www/html:z
+    links:
+      - mysql
+  mysql:
+  #imagen oficial de docker, limpia en: https://hub.docker.com/_/mysql
+    image: mysql:5.6
+    container_name: prestashop-bd
+    restart: always
+    volumes:
+      - ./data/prestashop_DB/:/var/lib/mysql/
+    environment:
+      MYSQL_ROOT_PASSWORD: root-pass
+      MYSQL_DATABASE: prestashop
+      MYSQL_USER: prestashop
+      MYSQL_PASSWORD: prestashop
